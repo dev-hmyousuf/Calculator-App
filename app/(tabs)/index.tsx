@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { router } from 'expo-router'
 
 const Calculator = () => {
   const [isDark, setIsDark] = useState(true);
@@ -15,16 +14,18 @@ const Calculator = () => {
           .replace(/X/g, '*')
           .replace(/—/g, '-')
           .replace(/%/g, '*0.01')
-        	.replace(/÷/g, '/');
+          .replace(/÷/g, '/');
         const evalResult = eval(expression);
         setDisplayValue(evalResult.toString());
       } catch (error) {
         setDisplayValue('Error');
       }
     } else if (value === '±') {
-      setDisplayValue(prev => prev.startsWith('-') ? prev.slice(1) : `-${prev}`);
+      setDisplayValue((prev) =>
+        prev.startsWith('-') ? prev.slice(1) : '-' + prev
+      );
     } else {
-      setDisplayValue(prev => prev + value);
+      setDisplayValue((prev) => prev + value);
     }
   };
 
@@ -32,7 +33,7 @@ const Calculator = () => {
     ['C', '±', '%', '+'],
     ['1', '2', '3', '—'],
     ['4', '5', '6', 'X'],
-    ['7', '8', '9', '/'],
+    ['7', '8', '9', '÷'],
     ['0', '00', '.', '='],
   ];
 
@@ -40,7 +41,6 @@ const Calculator = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: themeStyles.background }]}>
-
       <TouchableOpacity
         style={[styles.themeToggle, { backgroundColor: themeStyles.toggleBg }]}
         onPress={() => setIsDark(!isDark)}
@@ -66,7 +66,7 @@ const Calculator = () => {
                   styles.button,
                   {
                     backgroundColor:
-                      ['+', '—', 'X', '/', '='].includes(button)
+                      ['+', '—', 'X', '÷', '='].includes(button)
                         ? themeStyles.operatorButton
                         : ['C', '±', '%'].includes(button)
                         ? themeStyles.topOperatorButton
@@ -80,7 +80,7 @@ const Calculator = () => {
                     styles.buttonText,
                     {
                       color:
-                        ['C', '±', '%'].includes(button) || ['+', '—', 'X', '/', '='].includes(button)
+                        ['C', '±', '%', '+', '—', 'X', '÷', '='].includes(button)
                           ? 'white'
                           : themeStyles.text,
                     },
@@ -123,7 +123,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 50,
     right: 20,
-    padding: 10,
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 25,
     zIndex: 1000,
     elevation: 5,
@@ -144,6 +147,7 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flex: 3,
     padding: 10,
+    paddingBottom: 30,
   },
   row: {
     flex: 1,
@@ -157,7 +161,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 35,
     marginHorizontal: 5,
-    
+    height: 70,
   },
   buttonText: {
     fontSize: 28,
