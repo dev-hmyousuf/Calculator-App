@@ -3,8 +3,34 @@ import * as Battery from 'expo-battery';
 import { useEffect, useState } from 'react';
 
 export default function App() {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text}>Will Be Available Soon...</Text>
+    </View>
+  )
+}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#000',
+  },
+  text: {
+    color: '#fff',
+    fontSize: 18,
+    shadowColor: '#fff',
+    shadowOpacity: 1,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 0 },
+    textShadowColor: '#fff',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 10,
+  },
+});
 
-  /*
+
+/*
   const [batteryLevel, setBatteryLevel] = useState<number | null>(null);
   const [isPluggedIn, setIsPluggedIn] = useState(false);
 
@@ -60,28 +86,3 @@ export default function App() {
   );
 
   */
-  return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Will Be Available Soon...</Text>
-    </View>
-  )
-}
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#000',
-  },
-  text: {
-    color: '#fff',
-    fontSize: 18,
-    shadowColor: '#fff',
-    shadowOpacity: 1,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 0 },
-    textShadowColor: '#fff',
-    textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 10,
-  },
-});
