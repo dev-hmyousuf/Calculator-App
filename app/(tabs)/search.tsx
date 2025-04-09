@@ -1,65 +1,141 @@
-import React, { useEffect, useState } from 'react';
-import { View, Image, FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import * as MediaLibrary from 'expo-media-library';
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, TextInput  } from 'react-native';
+import Bolt from "@/assets/iconSvg/bolt.svg";
+import Ruler from "@/assets/iconSvg/ruler.svg";
+import Excercise from "@/assets/iconSvg/excercise.svg";
+import Area from "@/assets/iconSvg/area.svg";
+import VoiceEq from "@/assets/iconSvg/voiceEq.svg"
 
-export default function GalleryFromDevice() {
-  const [media, setMedia] = useState([]);
-  const [hasPermission, setHasPermission] = useState(null);
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await MediaLibrary.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
-
-      if (status === 'granted') {
-        const mediaData = await MediaLibrary.getAssetsAsync({
-          mediaType: ['photo', 'video'], // Fetch both photos and videos
-          first: 100, // Fetch first 100 media
-          sortBy: [['creationTime', false]], // Newest first
-        });
-        setMedia(mediaData.assets);
-      }
-    })();
-  }, []);
-
-  if (hasPermission === false) {
-    return <Text>No access to media library</Text>;
-  }
-
-  const renderItem = ({ item }) => {
-    if (item.mediaType === 'photo') {
-      return <Image source={{ uri: item.uri }} style={styles.image} />;
-    } else if (item.mediaType === 'video') {
-      return (
-        <TouchableOpacity style={styles.video}>
-          <Text>▶️ Video</Text> {/* You can replace with video player component */}
-        </TouchableOpacity>
-      );
-    }
-  };
-
+const Button = ({ label = "Length", Icon, iconStyle }) => {
   return (
-    <FlatList
-      data={media}
-      keyExtractor={(item) => item.id}
-      numColumns={3}
-      renderItem={renderItem}
-    />
+    <TouchableOpacity activeOpacity={0.8} style={styles.button}>
+      {Icon && <Icon width={32} height={32} style={iconStyle} />}
+      <Text style={styles.label}>{label}</Text>
+    </TouchableOpacity>
+  );
+};
+
+export default function Bmi() {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>Fitness Set</Text>
+      <View style={styles.wrapper}>
+        <Button 
+          label="Length" 
+          Icon={Ruler} 
+          iconStyle={{ color: 'red' }} 
+        />
+        <Button 
+          label="Weight" 
+          Icon={Bolt} 
+          iconStyle={{ color: 'blue' }} 
+        />
+        <Button 
+          label="Excercise" 
+          Icon={Excercise} 
+          iconStyle={{ color: 'blue' }} 
+        />
+        <Button 
+          label="Area" 
+          Icon={Area} 
+          iconStyle={{ color: 'blue' }} 
+        />
+        
+      </View>
+      <View style={styles.bottomWrapper}>
+        <View style={styles.instantBtn}>
+          <TextInput 
+            style={{ color: "#fff" }} 
+            placeholder="Convert Instantly" 
+            placeholderTextColor="#aaa" 
+          />
+          <View style={{padding : 10, borderRadius : "50%", backgroundColor : "#1a1a1a"}}>
+            <VoiceEq  />
+          </View>
+         
+        </View>
+        <Text style={{ color : "#1a1a1a" }}>Enter the measurement you want to convert</Text>
+        <View style={styles.allCtgBtn}><Text>All Categories</Text></View>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  image: {
-    width: '33%',
-    aspectRatio: 1,
-    margin: 1,
-  },
-  video: {
-    width: '33%',
-    aspectRatio: 1,
-    margin: 1,
-    backgroundColor: '#f0f0f0',
+  container: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#f3f2f7',
   },
+  wrapper: {
+    borderRadius: 20,
+    backgroundColor: '#fff',
+    width: '90%',
+    flexDirection: 'row',
+    gap: 10,
+    flexWrap: 'wrap',
+    padding: 15,
+    justifyContent: 'space-between',
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 3,
+  },
+  button: {
+    width : "48%",
+    backgroundColor: '#f3f2f7',
+    borderRadius: 20,
+    flexDirection: 'row',
+    padding: 15,
+    gap: 10,
+    
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  header : {
+    fontSize : 24,
+    fontWeight : "bold",
+    marginBottom : 20,
+  },
+  bottomWrapper : {
+    position : "absolute",
+    bottom : 0,
+    width : "100%",
+    justifyContent : "center",
+    alignItems : "center",
+    backgroundColor : "#fff",
+    gap : 10,
+    borderRadius : 30,
+    paddingVertical : 10,
+  },
+  instantBtn : {
+    width : "95%",
+    height : 50,
+    backgroundColor : "#000",
+    borderRadius : 30,
+    justifyContent : "space-between",
+  	alignItems : "center",
+    flexDirection : "row",
+    paddingVertical : 10,
+    paddingHorizontal : 30,
+    height : "auto",
+    backgroundColor : "#000",
+  },
+  allCtgBtn : {
+    width : "50%",
+    height : 50,
+    backgroundColor : "#fff",
+    borderRadius : 30,
+    justifyContent : "center",
+  	alignItems : "center",
+    flexDirection : "row",
+    paddingVertical : 10,
+    paddingHorizontal : 30,
+    height : "auto",
+    backgroundColor : "#fff",
+    borderWidth : 1,
+    borderColor : "#000",
+    marginVertical : 10
+  }
 });
